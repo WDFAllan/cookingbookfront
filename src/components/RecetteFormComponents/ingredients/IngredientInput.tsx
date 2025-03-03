@@ -1,4 +1,9 @@
 import React from "react";
+import{
+    Button,
+    Input
+}from '../../../styles/styleComponents/RecetteForm.styles'
+
 
 type Ingredient = {
     name: string;
@@ -19,14 +24,13 @@ const IngredientInput: React.FC<IngredientInputProps> = ({
                                                          }) => {
     return (
         <div>
-            <h3>Ajouter un ingrédient</h3>
-            <input
+            <Input
                 type="text"
                 placeholder="Nom"
                 value={ingredientInput.name}
                 onChange={(e) => onIngredientChange("name", e.target.value)}
             />
-            <input
+            <Input
                 type="number"
                 placeholder="Quantité"
                 value={ingredientInput.quantity}
@@ -34,15 +38,15 @@ const IngredientInput: React.FC<IngredientInputProps> = ({
                     onIngredientChange("quantity", parseFloat(e.target.value))
                 }
             />
-            <input
+            <Input
                 type="text"
                 placeholder="Unité"
                 value={ingredientInput.unit}
                 onChange={(e) => onIngredientChange("unit", e.target.value)}
             />
-            <button type="button" onClick={onAddIngredient}>
+            <Button type="button" onClick={onAddIngredient}>
                 Ajouter l'ingrédient
-            </button>
+            </Button>
         </div>
     );
 };

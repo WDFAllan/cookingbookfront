@@ -18,7 +18,6 @@ const IngredientList: React.FC<IngredientListProps> = ({
                                                        }) => {
     return (
         <div>
-            <h3>Liste des ingrédients ajoutés</h3>
             <ul>
                 {ingredients.map((ingredient, index) => (
                     <IngredientItem

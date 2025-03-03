@@ -9,7 +9,6 @@ type StepListProps = {
 const StepList: React.FC<StepListProps> = ({ steps, onRemoveStep }) => {
   return (
     <div>
-      <h3>Liste des Étapes ajoutées</h3>
       <ul>
         {steps.map((step, index) => (
           <StepItem
