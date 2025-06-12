@@ -46,7 +46,7 @@ export const Input = styled.input`
 export const Button = styled.button`
     padding: 10px 20px;
     font-size: 1rem;
-    background-color: #f8abc2;
+    background-color: #028a66;
     color: black;
     border: none;
     border-radius: 4px;
@@ -54,7 +54,7 @@ export const Button = styled.button`
     transition: background-color 0.3s ease;
 
     &:hover {
-        background-color: #cf93a6;
+        background-color: #00ac7b;
     }
 `;
 
@@ -63,11 +63,11 @@ export const Section = styled.div`
 `;
 
 export const BackToListButton = styled.button`
-    background-color: #f8abc2;
+    background-color: #00d69a;
     color: #000000;
     height: 5%;
     margin-left: 5%;
-    margin-top:40px;
+    margin-top: 40px;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
@@ -76,6 +76,6 @@ export const BackToListButton = styled.button`
     transition: background-color 0.3s;
 
     &:hover {
-        background-color: #cf93a6;
+        background-color: #02b381;
     }
 `;

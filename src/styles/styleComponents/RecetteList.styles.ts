@@ -55,7 +55,7 @@ export const TagList = styled.div`
 `;
 
 export const Tag = styled.span`
-    background-color: #f8abc2;
+    background-color: #00d69a;
     color: #174E4F;
     padding: 0.3rem 0.6rem;
     font-size: 0.8rem; /* Réduit la taille des tags */
@@ -64,7 +64,7 @@ export const Tag = styled.span`
 `;
 
 export const AddRecetteButton = styled.button`
-    background-color: #f8abc2;
+    background-color: #00d69a;
     color: #000000;
     padding: 10px 15px;
     border: none;
@@ -76,6 +76,6 @@ export const AddRecetteButton = styled.button`
     margin-bottom: 1%;
 
     &:hover {
-        background-color: #BC8294FF;
+        background-color: #02b886;
     }
 `;

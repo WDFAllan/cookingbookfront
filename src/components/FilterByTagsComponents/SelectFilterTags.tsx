@@ -32,10 +32,10 @@ export default function SelectFilterTags(props:{filterTagsList:string[],onSelect
     const theme = createTheme({
         palette: {
             primary: {
-                main: '#096A09'
+                main: '#1500d6'
             },
             secondary: {
-                main: '#f8abc2'
+                main: '#00d69a'
             }
         }
     });

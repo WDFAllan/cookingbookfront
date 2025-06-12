@@ -13,7 +13,7 @@ export const RecetteDetailsWrapper = styled.div`
 
 // Le bouton "Retour"
 export const BackButton = styled.button`
-    background-color: #f8abc2;
+    background-color: #00d69a;
     color: black;
     padding: 10px 15px;
     border: none;
@@ -23,7 +23,7 @@ export const BackButton = styled.button`
     transition: background-color 0.3s;
 
     &:hover {
-        background-color: #cf93a6;
+        background-color: #01ba86;
     }
 `;
 
@@ -47,7 +47,7 @@ export const TagList = styled.div`
 `;
 
 export const Tag = styled.span`
-    background-color: #f8abc2;
+    background-color: #00d69a;
     color: black;
     font-size: 14px;
     padding: 8px 12px;
@@ -59,7 +59,7 @@ export const Tag = styled.span`
 
 
     &:hover {
-        background-color: #cf93a6;
+        background-color: #00a87a;
     }
 `;
 
