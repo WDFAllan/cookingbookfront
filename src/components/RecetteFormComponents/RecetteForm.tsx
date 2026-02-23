@@ -34,6 +34,10 @@ type Recette = {
 };
 
 const RecetteForm: React.FC = () => {
+
+    const apibaseurl = process.env.REACT_APP_API_URL;
+
+
     const [recette, setRecette] = useState<Recette>({
         name: "",
         rate: 0,
@@ -110,7 +114,7 @@ const RecetteForm: React.FC = () => {
 
         try {
             if(recette.name!=""){
-                const response = await axios.post("http://localhost:8080/api/v1/recette", recette);
+                const response = await axios.post(`${apibaseurl}/recette`, recette);
                 console.log("Recette envoyée avec succès : ", response.data);
                 alert("Recette soumise avec succès !");
                 setRecette({

@@ -17,6 +17,7 @@ import {
 }from '../styles/styleComponents/RecetteList.styles'
 import {useNavigate} from "react-router-dom";
 
+
 type Recette = {
     id: number;
     name: string;
@@ -36,6 +37,8 @@ type Ingredient = {
 }
 
 function RecetteList(){
+
+    const apibaseurl = process.env.REACT_APP_API_URL;
 
     const navigate = useNavigate();
     const [recetteList, setRecetteList] = useState<Recette[]>([]);
@@ -59,7 +62,7 @@ function RecetteList(){
     useEffect(() => {
         const fetchRecetteList = async () => {
             try{
-                const response = await axios.get('http://localhost:8080/api/v1/recette');
+                const response = await axios.get(`${apibaseurl}/recette`);
                 const RecetteListData = response.data;
                 if (Array.isArray(RecetteListData)) {
                     setRecetteList(RecetteListData);
@@ -79,7 +82,7 @@ function RecetteList(){
 
         const fetchTagsFilter = async () =>{
             try{
-                const response = await axios.get('http://localhost:8080/api/v1/recette/getAllTags');
+                const response = await axios.get(`${apibaseurl}/recette/getAllTags`);
                 const filterTagslist = response?.data;
                 if(Array.isArray((filterTagslist))){
                     setFilterTags(filterTagslist);
@@ -104,13 +107,13 @@ function RecetteList(){
             try {
                 console.log(selectedTags);
                 if(selectedTags.length!=0){
-                    const response = await axios.get('http://localhost:8080/api/v1/recette/getByTags', {
+                    const response = await axios.get(`${apibaseurl}/recette/getByTags`, {
                         params: {tags: selectedTags},
                         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: "comma" })
                     });
                     setRecetteList(response?.data);
                 }else{
-                    const response = await axios.get('http://localhost:8080/api/v1/recette');
+                    const response = await axios.get(`${apibaseurl}/recette`);
                     const RecetteListData = response.data;
                     if (Array.isArray(RecetteListData)) {
                         setRecetteList(RecetteListData);

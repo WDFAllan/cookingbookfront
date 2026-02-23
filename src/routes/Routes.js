@@ -12,7 +12,7 @@ export default function DefineRoutes(){
         <Router>
             <Routes>
                 <Route path="/" element={<MainPage/>}></Route>
-                <Route path="/listeRecette" element={<RecetteList/>}></Route>
+                <Route path="/listeRecette" element={<MainPage/>}></Route>
                 <Route path="/recetteForm" element={<RecetteForm/>}></Route>
             </Routes>
         </Router>
