@@ -1,31 +1,20 @@
 import React from "react";
+import { ItemRow, StepNumber, RemoveButton } from '../../../styles/styleComponents/RecetteForm.styles';
 
 type StepItemProps = {
     step: string;
+    index: number;
     onRemoveStep: () => void;
 };
 
-const StepItem: React.FC<StepItemProps> = ({ step, onRemoveStep }) => {
-    return (
-        <li>
+const StepItem: React.FC<StepItemProps> = ({ step, index, onRemoveStep }) => (
+    <ItemRow>
+        <span style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+            <StepNumber>{index + 1}</StepNumber>
             {step}
-            <button
-                type="button"
-                onClick={onRemoveStep}
-                style={{
-                    background: "red",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "4px",
-                    padding: "5px 10px",
-                    cursor: "pointer",
-                    marginLeft: "10px",
-                }}
-            >
-                ✖
-            </button>
-        </li>
-    );
-};
+        </span>
+        <RemoveButton type="button" onClick={onRemoveStep} title="Supprimer">✕</RemoveButton>
+    </ItemRow>
+);
 
 export default StepItem;

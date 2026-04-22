@@ -31,13 +31,9 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
 export default function SelectFilterTags(props:{filterTagsList:string[],onSelectTags:(tags:string[]) => void}) {
     const theme = createTheme({
         palette: {
-            primary: {
-                main: '#1500d6'
-            },
-            secondary: {
-                main: '#00d69a'
-            }
-        }
+            primary: { main: '#2D6A4F' },
+            secondary: { main: '#2D6A4F' },
+        },
     });
     const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
 
@@ -50,23 +46,17 @@ export default function SelectFilterTags(props:{filterTagsList:string[],onSelect
     return (
         <div>
             <FormControl sx={{
-                m: 1,
-                width: 300,
-                backgroundColor: theme.palette.secondary.main,
+                m: 0,
+                minWidth: 260,
                 '& .MuiOutlinedInput-root': {
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'transparent', // Supprime la bordure bleue
-                    },
+                    borderRadius: '8px',
+                    backgroundColor: '#ffffff',
+                    '& fieldset': { borderColor: '#E2EBE4' },
+                    '&:hover fieldset': { borderColor: '#40916C' },
+                    '&.Mui-focused fieldset': { borderColor: '#2D6A4F' },
                 },
-                '& .MuiInputBase-input:focus': {
-                    outline: 'none', // Supprime l'outline
-                },
-                '& .MuiInputLabel-root': {
-                    color: 'black', // Couleur du label par défaut
-                },
-                '& .MuiInputLabel-root.Mui-focused': {
-                    color: 'black', // Garde la couleur blanche même en focus
-                }
+                '& .MuiInputLabel-root': { color: '#6B7280' },
+                '& .MuiInputLabel-root.Mui-focused': { color: '#2D6A4F' },
             }}>
                 <InputLabel id="demo-multiple-chip-label">Tags</InputLabel>
                 <Select

@@ -1,20 +1,23 @@
 import axios from "axios";
 import qs from "qs";
 import {useEffect, useState} from "react";
-import RecetteInfo from "./RecetteInfoComponents/RecetteInfo"
 import SelectFilterTags from "./FilterByTagsComponents/SelectFilterTags"
 import "../styles/css/RecetteList.css";
 import {
+    PageHeader,
+    HeaderTitle,
+    FilterBar,
+    SearchInput,
     RecetteListWrapper,
-    RecetteCard ,
-    RecetteName ,
+    RecetteCard,
+    RecetteName,
     RecetteDetails,
     RecetteRate,
     RecetteDate,
     TagList,
     Tag,
-    AddRecetteButton
-}from '../styles/styleComponents/RecetteList.styles'
+    AddRecetteButton,
+} from '../styles/styleComponents/RecetteList.styles'
 import {useNavigate} from "react-router-dom";
 
 
@@ -45,11 +48,9 @@ function RecetteList(){
 
     const [error, setError] = useState<string | null>(null);
 
-    const [selectedRecette, setSelectedRecette] = useState<Recette | null>(null);
-
     const [filterTags, setFilterTags] = useState<string[]>([]);
-
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
     function handleFilterByTags(tags:string[]){
         setSelectedTags(tags);
@@ -137,30 +138,30 @@ function RecetteList(){
 
 
 
-    if(selectedRecette){
-        return (
-            <RecetteInfo
-                recette={selectedRecette}
-                onBack={() => {
-                    setSelectedRecette(null);
-                    setSelectedTags([]);
-                }}
-            />
-        );
-    }
+    const filteredList = recetteList.filter(r =>
+        r.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     return (
         <div>
-            <header className="header">
-                <h1>Bienvenue dans notre livre de recette</h1>
-                <AddRecetteButton onClick={goToAddRecette}>ajouter une recette</AddRecetteButton>
-            </header>
+            <PageHeader>
+                <HeaderTitle>📖 Mon Livre de Recettes</HeaderTitle>
+                <AddRecetteButton onClick={goToAddRecette}>+ Ajouter une recette</AddRecetteButton>
+            </PageHeader>
 
-            <SelectFilterTags filterTagsList={filterTags} onSelectTags={handleFilterByTags}/>
+            <FilterBar>
+                <SearchInput
+                    type="text"
+                    placeholder="Rechercher une recette…"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <SelectFilterTags filterTagsList={filterTags} onSelectTags={handleFilterByTags}/>
+            </FilterBar>
 
             <RecetteListWrapper>
-                {recetteList.map((recette) => (
-                    <RecetteCard key={recette.id} onClick={() => setSelectedRecette(recette)}>
+                {filteredList.map((recette) => (
+                    <RecetteCard key={recette.id} onClick={() => navigate(`/recette/${recette.id}`)}>
                         <RecetteName>{recette.name}</RecetteName>
                         <RecetteDetails>
                             <RecetteRate>⭐ {recette.rate}/5</RecetteRate>

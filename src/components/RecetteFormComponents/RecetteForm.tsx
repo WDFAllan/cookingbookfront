@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import IngredientInput from "./ingredients/IngredientInput";
 import IngredientList from "./ingredients/IngredientList";
 import TagInput from "./tags/TagInput";
@@ -8,62 +8,52 @@ import StepList from "./steps/StepList";
 import "../../styles/css/RecetteForm.css";
 
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import {
     FormWrapper,
     Title,
     Label,
     Input,
     Button,
-    Section, BackToListButton
+    Section,
+    BackToListButton,
+} from '../../styles/styleComponents/RecetteForm.styles';
+import { useNavigate, useParams } from "react-router-dom";
 
-} from '../../styles/styleComponents/RecetteForm.styles'
-import {useNavigate} from "react-router-dom";
+type Ingredient = { name: string; quantity: number; unit: string; };
+type Recette = { name: string; rate: number; ingredients: Ingredient[]; steps: string[]; tags: string[]; };
+type Toast = { open: boolean; message: string; severity: 'success' | 'error' | 'warning' };
 
-type Ingredient = {
-    name: string;
-    quantity: number;
-    unit: string;
-};
-
-type Recette = {
-    name: string;
-    rate: number;
-    ingredients: Ingredient[];
-    steps: string[];
-    tags: string[];
-};
+const emptyRecette: Recette = { name: "", rate: 0, ingredients: [], steps: [], tags: [] };
 
 const RecetteForm: React.FC = () => {
 
     const apibaseurl = process.env.REACT_APP_API_URL;
-
-
-    const [recette, setRecette] = useState<Recette>({
-        name: "",
-        rate: 0,
-        ingredients: [],
-        steps: [],
-        tags: [],
-    });
-
-    const [ingredientInput, setIngredientInput] = useState<Ingredient>({
-        name: "",
-        quantity: 0,
-        unit: "",
-    });
-
     const navigate = useNavigate();
+    const { id } = useParams<{ id: string }>();
+    const isEditMode = Boolean(id);
 
+    const [recette, setRecette] = useState<Recette>(emptyRecette);
+    const [ingredientInput, setIngredientInput] = useState<Ingredient>({ name: "", quantity: 0, unit: "" });
     const [tagInput, setTagInput] = useState<string>("");
     const [stepInput, setStepInput] = useState<string>("");
+    const [toast, setToast] = useState<Toast>({ open: false, message: "", severity: "success" });
 
-    const goToList = ()=> {
-        navigate("/listeRecette");
-    }
+    const showToast = (message: string, severity: Toast['severity']) =>
+        setToast({ open: true, message, severity });
 
-    // const handleInputChange = (field: keyof Recette, value: any) => {
-    //     setRecette({ ...recette, [field]: value });
-    // };
+    useEffect(() => {
+        if (!id) return;
+        axios.get(`${apibaseurl}/recette/${id}`)
+            .then(res => {
+                const { name, rate, ingredients, steps, tags } = res.data;
+                setRecette({ name, rate, ingredients, steps, tags });
+            })
+            .catch(() => showToast("Impossible de charger la recette.", "error"));
+    }, [id]);
+
+    const goToList = () => navigate("/listeRecette");
 
     const handleIngredientChange = (field: keyof typeof ingredientInput, value: any) => {
         setIngredientInput({ ...ingredientInput, [field]: value });
@@ -71,75 +61,65 @@ const RecetteForm: React.FC = () => {
 
     const handleIngredientAdd = () => {
         if (ingredientInput.name && ingredientInput.quantity > 0 && ingredientInput.unit) {
-            setRecette({
-                ...recette,
-                ingredients: [...recette.ingredients, ingredientInput],
-            });
+            setRecette({ ...recette, ingredients: [...recette.ingredients, ingredientInput] });
             setIngredientInput({ name: '', quantity: 0, unit: '' });
         }
     };
 
     const handleIngredientRemove = (index: number) => {
-        const updatedIngredients = recette.ingredients.filter((_, i) => i !== index);
-        setRecette({ ...recette, ingredients: updatedIngredients });
+        setRecette({ ...recette, ingredients: recette.ingredients.filter((_, i) => i !== index) });
     };
 
     const handleStepAdd = () => {
-        if (stepInput.trim() !== '') {
+        if (stepInput.trim()) {
             setRecette({ ...recette, steps: [...recette.steps, stepInput.trim()] });
             setStepInput('');
         }
     };
 
     const handleStepRemove = (index: number) => {
-        const updatedSteps = recette.steps.filter((_, i) => i !== index);
-        setRecette({ ...recette, steps: updatedSteps });
+        setRecette({ ...recette, steps: recette.steps.filter((_, i) => i !== index) });
     };
 
-    // Handlers for Tags
     const handleTagAdd = () => {
-        if (tagInput.trim() !== '') {
+        if (tagInput.trim()) {
             setRecette({ ...recette, tags: [...recette.tags, tagInput.trim()] });
             setTagInput('');
         }
     };
 
     const handleTagRemove = (index: number) => {
-        const updatedTags = recette.tags.filter((_, i) => i !== index);
-        setRecette({ ...recette, tags: updatedTags });
+        setRecette({ ...recette, tags: recette.tags.filter((_, i) => i !== index) });
     };
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-
-        try {
-            if(recette.name!=""){
-                const response = await axios.post(`${apibaseurl}/recette`, recette);
-                console.log("Recette envoyée avec succès : ", response.data);
-                alert("Recette soumise avec succès !");
-                setRecette({
-                    name: "",
-                    rate: 0,
-                    ingredients: [],
-                    steps: [],
-                    tags: [],
-                });
-            }else{
-                alert("pas de nom");
-            }
-
-        } catch (error) {
-            console.error("Erreur lors de l'envoi de la recette : ", error);
-            alert("Erreur lors de l'envoi de la recette, veuillez réessayer.");
+        if (!recette.name.trim()) {
+            showToast("Le nom de la recette est obligatoire.", "warning");
+            return;
         }
-
-        console.log("Recette soumise :", recette);
+        try {
+            if (isEditMode) {
+                await axios.put(`${apibaseurl}/recette/${id}`, recette);
+                showToast("Recette modifiée avec succès !", "success");
+            } else {
+                await axios.post(`${apibaseurl}/recette`, recette);
+                showToast("Recette créée avec succès !", "success");
+                setRecette(emptyRecette);
+            }
+            setTimeout(() => navigate("/listeRecette"), 1200);
+        } catch (error) {
+            const detail = axios.isAxiosError(error)
+                ? error.response?.data?.detail
+                : null;
+            showToast(detail ?? "Erreur lors de l'envoi de la recette.", "error");
+        }
     };
 
     return (
         <div className="forms">
             <FormWrapper onSubmit={handleSubmit}>
-                <Title>Formulaire de Recette</Title>
+                <Title>{isEditMode ? "Modifier la recette" : "Nouvelle recette"}</Title>
 
                 <Label htmlFor="name">Nom de la recette</Label>
                 <Input
@@ -149,15 +129,17 @@ const RecetteForm: React.FC = () => {
                     onChange={(e) => setRecette({ ...recette, name: e.target.value })}
                 />
 
-                <Label htmlFor="rate">Note</Label>
+                <Label htmlFor="rate">Note (0 – 5)</Label>
                 <Input
                     type="number"
                     id="rate"
                     value={recette.rate}
-                    onChange={(e) => setRecette({ ...recette, rate: parseInt(e.target.value) })}
+                    min={0}
+                    max={5}
+                    step={0.5}
+                    onChange={(e) => setRecette({ ...recette, rate: parseFloat(e.target.value) })}
                 />
 
-                {/* Ingredients Section */}
                 <Section>
                     <Label>Ingrédients</Label>
                     <IngredientInput
@@ -165,33 +147,43 @@ const RecetteForm: React.FC = () => {
                         onIngredientChange={handleIngredientChange}
                         onAddIngredient={handleIngredientAdd}
                     />
-
                     <IngredientList
                         ingredients={recette.ingredients}
                         onRemoveIngredient={handleIngredientRemove}
                     />
-
                 </Section>
 
-                {/* Steps Section */}
                 <Section>
                     <Label>Étapes</Label>
                     <StepInput stepInput={stepInput} onStepChange={setStepInput} onAddStep={handleStepAdd} />
                     <StepList steps={recette.steps} onRemoveStep={handleStepRemove} />
                 </Section>
 
-                {/* Tags Section */}
                 <Section>
                     <Label>Tags</Label>
                     <TagInput tagInput={tagInput} onTagChange={setTagInput} onAddTag={handleTagAdd} />
                     <TagList tags={recette.tags} onRemoveTag={handleTagRemove} />
                 </Section>
 
-                <Button type="submit">Soumettre</Button>
+                <Button type="submit">{isEditMode ? "Enregistrer les modifications" : "Soumettre"}</Button>
             </FormWrapper>
             <BackToListButton onClick={goToList}>Retour à la liste</BackToListButton>
-        </div>
 
+            <Snackbar
+                open={toast.open}
+                autoHideDuration={3000}
+                onClose={() => setToast(t => ({ ...t, open: false }))}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert
+                    severity={toast.severity}
+                    onClose={() => setToast(t => ({ ...t, open: false }))}
+                    variant="filled"
+                >
+                    {toast.message}
+                </Alert>
+            </Snackbar>
+        </div>
     );
 };
 

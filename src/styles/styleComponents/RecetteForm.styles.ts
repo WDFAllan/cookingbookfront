@@ -1,81 +1,247 @@
 import styled from 'styled-components';
 
+const primary = '#2D6A4F';
+const primaryDark = '#1B4332';
+const primaryLight = '#40916C';
+const bgPage = '#F6FAF7';
+const border = '#E2EBE4';
+
 export const FormWrapper = styled.form`
-    max-width: 600px;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    margin-left: 32.5%;
-    padding: 30px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    font-family: 'Arial', sans-serif;
+    max-width: 640px;
+    margin: 2.5rem auto;
+    padding: 2.5rem;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+
+    @media (max-width: 700px) {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
 `;
 
 export const Title = styled.h2`
     text-align: center;
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 20px;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: ${primaryDark};
+    margin: 0 0 2rem;
+    letter-spacing: -0.02em;
 `;
 
 export const Label = styled.label`
     display: block;
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #555;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
 `;
 
 export const Input = styled.input`
     width: 100%;
-    padding: 10px;
+    padding: 0.65rem 0.875rem;
     font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 15px;
+    border: 1.5px solid ${border};
+    border-radius: 8px;
+    margin-bottom: 1.25rem;
     box-sizing: border-box;
-    transition: border-color 0.3s ease;
+    color: #111827;
+    background: ${bgPage};
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
     &:focus {
-        border-color: #007bff;
+        border-color: ${primaryLight};
         outline: none;
+        box-shadow: 0 0 0 3px rgba(64, 145, 108, 0.15);
+        background: #ffffff;
     }
 `;
 
 export const Button = styled.button`
-    padding: 10px 20px;
+    width: 100%;
+    padding: 0.8rem;
     font-size: 1rem;
-    background-color: #028a66;
-    color: black;
+    font-weight: 600;
+    background: linear-gradient(135deg, ${primary} 0%, ${primaryLight} 100%);
+    color: #ffffff;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+    margin-top: 0.5rem;
 
     &:hover {
-        background-color: #00ac7b;
+        opacity: 0.9;
+    }
+
+    &:active {
+        transform: scale(0.99);
     }
 `;
 
 export const Section = styled.div`
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    background: ${bgPage};
+    border-radius: 10px;
+    border: 1px solid ${border};
+`;
+
+export const InputRow = styled.div`
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+`;
+
+export const SmallInput = styled.input`
+    padding: 0.6rem 0.75rem;
+    font-size: 0.9rem;
+    border: 1.5px solid ${border};
+    border-radius: 8px;
+    color: #111827;
+    background: ${bgPage};
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    min-width: 0;
+
+    &:focus {
+        border-color: ${primaryLight};
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(64, 145, 108, 0.15);
+        background: #ffffff;
+    }
+`;
+
+export const AddButton = styled.button`
+    padding: 0.6rem 1rem;
+    background: ${primary};
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+
+    &:hover {
+        background: ${primaryDark};
+    }
+`;
+
+export const ItemsList = styled.ul`
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+`;
+
+export const ItemRow = styled.li`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 0.75rem;
+    background: #ffffff;
+    border: 1px solid ${border};
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: #374151;
+    list-style: none;
+`;
+
+export const StepNumber = styled.span`
+    min-width: 22px;
+    height: 22px;
+    background: ${primary};
+    color: #ffffff;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.6rem;
+    flex-shrink: 0;
+`;
+
+export const RemoveButton = styled.button`
+    background: transparent;
+    color: #9CA3AF;
+    border: none;
+    padding: 0.2rem 0.35rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    transition: color 0.15s ease, background 0.15s ease;
+    flex-shrink: 0;
+    margin-left: 0.5rem;
+    line-height: 1;
+
+    &:hover {
+        color: #dc2626;
+        background: #fee2e2;
+    }
+`;
+
+export const TagPillList = styled.ul`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0;
+    margin: 0.5rem 0 0;
+    list-style: none;
+`;
+
+export const TagPill = styled.li`
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    background: #d8f3dc;
+    color: #1b4332;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    list-style: none;
+`;
+
+export const TagPillRemove = styled.button`
+    background: transparent;
+    border: none;
+    color: #2d6a4f;
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.75rem;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.15s;
+
+    &:hover {
+        opacity: 1;
+    }
 `;
 
 export const BackToListButton = styled.button`
-    background-color: #00d69a;
-    color: #000000;
-    height: 5%;
-    margin-left: 5%;
-    margin-top: 40px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
+    display: block;
+    margin: 0 auto 2.5rem;
+    background: transparent;
+    color: ${primary};
+    padding: 0.5rem 1.25rem;
+    border: 1.5px solid ${primary};
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.2s ease;
 
     &:hover {
-        background-color: #02b381;
+        background: ${primary};
+        color: #ffffff;
     }
 `;

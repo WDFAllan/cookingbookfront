@@ -1,9 +1,5 @@
 import React from "react";
-import{
-    Button,
-    Input
-}from '../../../styles/styleComponents/RecetteForm.styles'
-
+import { InputRow, SmallInput, AddButton } from '../../../styles/styleComponents/RecetteForm.styles';
 
 type TagInputProps = {
     tagInput: string;
@@ -11,19 +7,18 @@ type TagInputProps = {
     onAddTag: () => void;
 };
 
-const TagInput: React.FC<TagInputProps> = ({ tagInput, onTagChange, onAddTag }) => {
-    return (
-        <div>
-            <Input
-                type="text"
-                placeholder="Tag"
-                value={tagInput}
-                onChange={(e) => onTagChange(e.target.value)}
-            />
-            <Button type="button" onClick={onAddTag}>
-                Ajouter le tag
-            </Button>
-        </div>
-    );
-}
+const TagInput: React.FC<TagInputProps> = ({ tagInput, onTagChange, onAddTag }) => (
+    <InputRow>
+        <SmallInput
+            type="text"
+            placeholder="ex: végétarien, rapide…"
+            value={tagInput}
+            style={{ flex: 1 }}
+            onChange={(e) => onTagChange(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); onAddTag(); } }}
+        />
+        <AddButton type="button" onClick={onAddTag}>+ Ajouter</AddButton>
+    </InputRow>
+);
+
 export default TagInput;

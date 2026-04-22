@@ -1,12 +1,28 @@
-import './App.css';
-import DefineRoutes from './routes/Routes'
+import { createGlobalStyle } from 'styled-components';
+import DefineRoutes from './routes/Routes';
+
+const GlobalStyle = createGlobalStyle`
+    *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background: #F6FAF7;
+        color: #111827;
+        -webkit-font-smoothing: antialiased;
+    }
+`;
 
 function App() {
-  return(
-      <div className="App">
-        <DefineRoutes/>
-      </div>
-  )
+    return (
+        <>
+            <GlobalStyle />
+            <DefineRoutes />
+        </>
+    );
 }
 
 export default App;

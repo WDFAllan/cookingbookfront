@@ -1,15 +1,7 @@
 import React from "react";
-import{
-    Button,
-    Input
-}from '../../../styles/styleComponents/RecetteForm.styles'
+import { Input, InputRow, SmallInput, AddButton } from '../../../styles/styleComponents/RecetteForm.styles';
 
-
-type Ingredient = {
-    name: string;
-    quantity: number;
-    unit: string;
-};
+type Ingredient = { name: string; quantity: number; unit: string; };
 
 type IngredientInputProps = {
     ingredientInput: Ingredient;
@@ -17,36 +9,40 @@ type IngredientInputProps = {
     onAddIngredient: () => void;
 };
 
-const IngredientInput: React.FC<IngredientInputProps> = ({
-                                                             ingredientInput,
-                                                             onIngredientChange,
-                                                             onAddIngredient,
-                                                         }) => {
+const IngredientInput: React.FC<IngredientInputProps> = ({ ingredientInput, onIngredientChange, onAddIngredient }) => {
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') { e.preventDefault(); onAddIngredient(); }
+    };
+
     return (
         <div>
             <Input
                 type="text"
-                placeholder="Nom"
+                placeholder="Nom de l'ingrédient"
                 value={ingredientInput.name}
                 onChange={(e) => onIngredientChange("name", e.target.value)}
+                onKeyDown={handleKeyDown}
             />
-            <Input
-                type="number"
-                placeholder="Quantité"
-                value={ingredientInput.quantity}
-                onChange={(e) =>
-                    onIngredientChange("quantity", parseFloat(e.target.value))
-                }
-            />
-            <Input
-                type="text"
-                placeholder="Unité"
-                value={ingredientInput.unit}
-                onChange={(e) => onIngredientChange("unit", e.target.value)}
-            />
-            <Button type="button" onClick={onAddIngredient}>
-                Ajouter l'ingrédient
-            </Button>
+            <InputRow>
+                <SmallInput
+                    type="number"
+                    placeholder="Quantité"
+                    value={ingredientInput.quantity || ''}
+                    min={0}
+                    style={{ width: '110px' }}
+                    onChange={(e) => onIngredientChange("quantity", parseFloat(e.target.value))}
+                    onKeyDown={handleKeyDown}
+                />
+                <SmallInput
+                    type="text"
+                    placeholder="Unité (g, ml, …)"
+                    value={ingredientInput.unit}
+                    style={{ flex: 1 }}
+                    onChange={(e) => onIngredientChange("unit", e.target.value)}
+                    onKeyDown={handleKeyDown}
+                />
+                <AddButton type="button" onClick={onAddIngredient}>+ Ajouter</AddButton>
+            </InputRow>
         </div>
     );
 };

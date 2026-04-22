@@ -1,8 +1,5 @@
 import React from "react";
-import{
-    Button,
-    Input
-}from '../../../styles/styleComponents/RecetteForm.styles'
+import { InputRow, SmallInput, AddButton } from '../../../styles/styleComponents/RecetteForm.styles';
 
 type StepInputProps = {
     stepInput: string;
@@ -10,20 +7,18 @@ type StepInputProps = {
     onAddStep: () => void;
 };
 
-const StepInput: React.FC<StepInputProps> = ({ stepInput, onStepChange, onAddStep }) => {
-    return (
-        <div>
-            <Input
-                type="text"
-                placeholder="Étape"
-                value={stepInput}
-                onChange={(e) => onStepChange(e.target.value)}
-            />
-            <Button type="button" onClick={onAddStep}>
-                Ajouter l'étape
-            </Button>
-        </div>
-    );
-};
+const StepInput: React.FC<StepInputProps> = ({ stepInput, onStepChange, onAddStep }) => (
+    <InputRow>
+        <SmallInput
+            type="text"
+            placeholder="Décrivez l'étape…"
+            value={stepInput}
+            style={{ flex: 1 }}
+            onChange={(e) => onStepChange(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); onAddStep(); } }}
+        />
+        <AddButton type="button" onClick={onAddStep}>+ Ajouter</AddButton>
+    </InputRow>
+);
 
 export default StepInput;

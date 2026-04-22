@@ -7,19 +7,20 @@ import {
     RecetteTitle,
     RecetteDetails,
     TagList,
-    Tag
-
-}from '../../styles/styleComponents/RecetteInfo.styles'
+    Tag,
+    ActionButtons,
+    EditButton,
+    DeleteButton,
+} from '../../styles/styleComponents/RecetteInfo.styles'
 
 type Recette = {
     id: number;
     name: string;
     rate: number;
     date: Date;
-    ingredients:Ingredient[];
+    ingredients: Ingredient[];
     steps: string[];
     tags: string[];
-
 }
 
 type Ingredient = {
@@ -29,32 +30,36 @@ type Ingredient = {
     unit: string;
 }
 
-type RecetteProps={
+type RecetteProps = {
     recette: Recette;
-    onBack:() => void;
+    onBack: () => void;
+    onEdit: () => void;
+    onDelete: () => void;
 }
 
-
-function RecetteInfo(recetteProps: RecetteProps) {
-
-    const recetteProp = recetteProps.recette;
+function RecetteInfo({ recette, onBack, onEdit, onDelete }: RecetteProps) {
     return (
         <RecetteDetailsWrapper>
-            <BackButton onClick={recetteProps.onBack}>Retour</BackButton>
-            <RecetteTitle>{recetteProp.name}</RecetteTitle>
-            <RecetteDetails>⭐ {recetteProp.rate}/5</RecetteDetails>
-            <RecetteDetails>Date : {new Date(recetteProp.date).toLocaleDateString()}</RecetteDetails>
+            <BackButton onClick={onBack}>Retour</BackButton>
+            <RecetteTitle>{recette.name}</RecetteTitle>
+            <RecetteDetails>⭐ {recette.rate}/5</RecetteDetails>
+            <RecetteDetails>Date : {new Date(recette.date).toLocaleDateString()}</RecetteDetails>
 
-            <IngredientInfoList ingredients={recetteProp.ingredients} />
-            <StepInfoList steps={recetteProp.steps} />
+            <IngredientInfoList ingredients={recette.ingredients} />
+            <StepInfoList steps={recette.steps} />
 
             <TagList>
-                {recetteProp.tags.map((tag: string, idx: number) => (
+                {recette.tags.map((tag: string, idx: number) => (
                     <Tag key={idx}>{tag}</Tag>
                 ))}
             </TagList>
+
+            <ActionButtons>
+                <EditButton onClick={onEdit}>Modifier</EditButton>
+                <DeleteButton onClick={onDelete}>Supprimer</DeleteButton>
+            </ActionButtons>
         </RecetteDetailsWrapper>
     );
+}
 
-
-}export default  RecetteInfo
+export default RecetteInfo;
