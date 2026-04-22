@@ -2,8 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import IngredientInput from "./ingredients/IngredientInput";
 import ImageCropModal from "./ImageCropModal";
 import IngredientList from "./ingredients/IngredientList";
-import TagInput from "./tags/TagInput";
-import TagList from "./tags/TagList";
+import TagSelector from "./tags/TagSelector";
 import StepInput from "./steps/StepInput";
 import StepList from "./steps/StepList";
 import "../../styles/css/RecetteForm.css";
@@ -37,7 +36,6 @@ const RecetteForm: React.FC = () => {
 
     const [recette, setRecette] = useState<Recette>(emptyRecette);
     const [ingredientInput, setIngredientInput] = useState<Ingredient>({ name: "", quantity: 0, unit: "" });
-    const [tagInput, setTagInput] = useState<string>("");
     const [stepInput, setStepInput] = useState<string>("");
     const [toast, setToast] = useState<Toast>({ open: false, message: "", severity: "success" });
     const [cropSrc, setCropSrc] = useState<string | null>(null);
@@ -104,17 +102,6 @@ const RecetteForm: React.FC = () => {
 
     const handleStepRemove = (index: number) => {
         setRecette({ ...recette, steps: recette.steps.filter((_, i) => i !== index) });
-    };
-
-    const handleTagAdd = () => {
-        if (tagInput.trim()) {
-            setRecette({ ...recette, tags: [...recette.tags, tagInput.trim()] });
-            setTagInput('');
-        }
-    };
-
-    const handleTagRemove = (index: number) => {
-        setRecette({ ...recette, tags: recette.tags.filter((_, i) => i !== index) });
     };
 
     const handleSubmit = async (event: React.FormEvent) => {
@@ -220,8 +207,10 @@ const RecetteForm: React.FC = () => {
 
                 <Section>
                     <Label>Tags</Label>
-                    <TagInput tagInput={tagInput} onTagChange={setTagInput} onAddTag={handleTagAdd} />
-                    <TagList tags={recette.tags} onRemoveTag={handleTagRemove} />
+                    <TagSelector
+                        tags={recette.tags}
+                        onChange={(tags) => setRecette({ ...recette, tags })}
+                    />
                 </Section>
 
                 <Button type="submit">{isEditMode ? "Enregistrer les modifications" : "Soumettre"}</Button>

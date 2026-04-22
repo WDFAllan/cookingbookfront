@@ -227,6 +227,40 @@ export const TagPillRemove = styled.button`
     }
 `;
 
+export const TagGroupLabel = styled.span`
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.4rem;
+    display: block;
+`;
+
+export const TagGroup = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+`;
+
+export const TagToggleButton = styled.button<{ $selected: boolean }>`
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border: 1.5px solid #2D6A4F;
+    background: ${({ $selected }) => $selected ? '#2D6A4F' : 'transparent'};
+    color: ${({ $selected }) => $selected ? '#ffffff' : '#2D6A4F'};
+
+    &:hover {
+        background: ${({ $selected }) => $selected ? '#1B4332' : '#d8f3dc'};
+        border-color: #1B4332;
+    }
+`;
+
 export const BackToListButton = styled.button`
     display: block;
     margin: 0 auto 2.5rem;

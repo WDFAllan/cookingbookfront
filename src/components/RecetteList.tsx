@@ -1,10 +1,9 @@
 import axios from "axios";
+import StarRating from "./StarRating";
 import qs from "qs";
 import {useEffect, useState} from "react";
 import SelectFilterTags from "./FilterByTagsComponents/SelectFilterTags"
 import {
-    PageHeader,
-    HeaderTitle,
     FilterBar,
     SearchInput,
     RecetteListWrapper,
@@ -16,7 +15,6 @@ import {
     RecetteDate,
     TagList,
     Tag,
-    AddRecetteButton,
 } from '../styles/styleComponents/RecetteList.styles'
 import {useNavigate} from "react-router-dom";
 
@@ -56,10 +54,6 @@ function RecetteList(){
 
     function handleFilterByTags(tags:string[]){
         setSelectedTags(tags);
-    }
-
-    function goToAddRecette(){
-        navigate("/recetteForm");
     }
 
     useEffect(() => {
@@ -146,11 +140,6 @@ function RecetteList(){
 
     return (
         <div>
-            <PageHeader>
-                <HeaderTitle>📖 Mon Livre de Recettes</HeaderTitle>
-                <AddRecetteButton onClick={goToAddRecette}>+ Ajouter une recette</AddRecetteButton>
-            </PageHeader>
-
             <FilterBar>
                 <SearchInput
                     type="text"
@@ -169,7 +158,7 @@ function RecetteList(){
                         )}
                         <RecetteName>{recette.name}</RecetteName>
                         <RecetteDetails>
-                            <RecetteRate>⭐ {recette.rate}/5</RecetteRate>
+                            <RecetteRate><StarRating rate={recette.rate} size="0.95rem" /></RecetteRate>
                             {recette.prepTime && <RecetteDate>⏱ {recette.prepTime} min</RecetteDate>}
                         </RecetteDetails>
                         <TagList>

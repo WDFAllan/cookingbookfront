@@ -8,6 +8,10 @@ const GlobalStyle = createGlobalStyle`
         padding: 0;
     }
 
+    html, body, #root {
+        height: 100%;
+    }
+
     body {
         font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         background: #F6FAF7;
