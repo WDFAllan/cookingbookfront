@@ -3,8 +3,9 @@ import StepInfoItem from "./StepInfoItem";
 import {
     ListWrapper,
     ListTitle,
-    StepsList
-}from '../../../styles/styleComponents/RecetteInfo.styles'
+    StepsList,
+} from '../../../styles/styleComponents/RecetteInfo.styles';
+
 type StepListProps = {
     steps: string[];
 };
@@ -12,12 +13,14 @@ type StepListProps = {
 const StepInfoList: React.FC<StepListProps> = ({ steps }) => {
     return (
         <ListWrapper>
-            <ListTitle>Étapes</ListTitle>
+            <ListTitle>Étapes ({steps.length})</ListTitle>
             <StepsList>
                 {steps.map((step, index) => (
                     <StepInfoItem
                         key={index}
                         step={step}
+                        number={index + 1}
+                        isLast={index === steps.length - 1}
                     />
                 ))}
             </StepsList>

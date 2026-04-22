@@ -1,17 +1,27 @@
 import React from "react";
 import {
-    ListItem
-}from '../../../styles/styleComponents/RecetteInfo.styles'
+    StepRow,
+    StepNumberCol,
+    StepCircle,
+    StepConnector,
+    StepText,
+} from '../../../styles/styleComponents/RecetteInfo.styles';
 
 type StepItemProps = {
     step: string;
+    number: number;
+    isLast: boolean;
 };
 
-const StepInfoItem: React.FC<StepItemProps> = ({step}) => {
+const StepInfoItem: React.FC<StepItemProps> = ({ step, number, isLast }) => {
     return (
-        <ListItem>
-            {step}
-        </ListItem>
+        <StepRow>
+            <StepNumberCol>
+                <StepCircle>{number}</StepCircle>
+                {!isLast && <StepConnector />}
+            </StepNumberCol>
+            <StepText>{step}</StepText>
+        </StepRow>
     );
 };
 

@@ -20,7 +20,7 @@ type IngredientListProps = {
 const IngredientInfoList: React.FC<IngredientListProps> = ({ingredients}) => {
     return (
         <ListWrapper>
-            <ListTitle>Ingrédients</ListTitle>
+            <ListTitle>Ingrédients ({ingredients.length})</ListTitle>
             <IngredientList>
                 {ingredients.map((ingredient, index) => (
                     <IngredientInfoItem

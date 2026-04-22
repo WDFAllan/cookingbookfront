@@ -4,7 +4,7 @@ import axios from 'axios';
 import RecetteInfo from './RecetteInfoComponents/RecetteInfo';
 
 type Ingredient = { id: number; name: string; quantity: number; unit: string; };
-type Recette = { id: number; name: string; rate: number; date: Date; ingredients: Ingredient[]; steps: string[]; tags: string[]; imageUrl?: string; prepTime?: number; };
+type Recette = { id: number; name: string; rate: number; date: Date; ingredients: Ingredient[]; steps: string[]; tags: string[]; imageUrl?: string; prepTime?: number; servings?: number; };
 
 const RecettePage: React.FC = () => {
     const { id } = useParams<{ id: string }>();

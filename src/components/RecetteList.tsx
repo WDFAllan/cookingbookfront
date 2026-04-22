@@ -31,6 +31,7 @@ type Recette = {
     tags: string[];
     imageUrl?: string;
     prepTime?: number;
+    servings?: number;
 }
 
 type Ingredient = {

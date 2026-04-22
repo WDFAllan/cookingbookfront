@@ -85,6 +85,37 @@ export const Tag = styled.span`
     text-transform: capitalize;
 `;
 
+export const MetaBar = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0.75rem 0 1.25rem;
+`;
+
+export const MetaChip = styled.div`
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: ${bgPage};
+    border: 1px solid ${border};
+    border-radius: 20px;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: ${primaryDark};
+`;
+
+export const TwoColumnLayout = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1.75rem;
+
+    @media (max-width: 700px) {
+        grid-template-columns: 1fr;
+    }
+`;
+
 export const ListWrapper = styled.div`
     margin-top: 1.75rem;
     padding: 1.5rem;
@@ -128,6 +159,97 @@ export const ListItem = styled.li`
     border-radius: 8px;
     border: 1px solid ${border};
     list-style-type: none;
+`;
+
+export const StepRow = styled.li`
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    list-style: none;
+`;
+
+export const StepNumberCol = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+`;
+
+export const StepCircle = styled.div`
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: ${primary};
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+`;
+
+export const StepConnector = styled.div`
+    width: 2px;
+    flex: 1;
+    min-height: 16px;
+    background: ${border};
+    margin: 4px 0;
+`;
+
+export const StepText = styled.p`
+    font-size: 0.95rem;
+    color: #374151;
+    margin: 0;
+    padding: 4px 0 1rem;
+    line-height: 1.5;
+`;
+
+export const ServingsControl = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.25rem 0;
+`;
+
+export const ServingsLabel = styled.span`
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: ${primaryDark};
+`;
+
+export const ServingsButton = styled.button`
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid ${primary};
+    background: transparent;
+    color: ${primary};
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+
+    &:hover:not(:disabled) {
+        background: ${primary};
+        color: #fff;
+    }
+
+    &:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+    }
+`;
+
+export const ServingsCount = styled.span`
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: ${primaryDark};
+    min-width: 2rem;
+    text-align: center;
 `;
 
 export const ActionButtons = styled.div`

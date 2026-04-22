@@ -23,10 +23,10 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 
 type Ingredient = { name: string; quantity: number; unit: string; };
-type Recette = { name: string; rate: number; ingredients: Ingredient[]; steps: string[]; tags: string[]; imageUrl: string; prepTime: number | ""; };
+type Recette = { name: string; rate: number; ingredients: Ingredient[]; steps: string[]; tags: string[]; imageUrl: string; prepTime: number | ""; servings: number | ""; };
 type Toast = { open: boolean; message: string; severity: 'success' | 'error' | 'warning' };
 
-const emptyRecette: Recette = { name: "", rate: 0, ingredients: [], steps: [], tags: [], imageUrl: "", prepTime: "" };
+const emptyRecette: Recette = { name: "", rate: 0, ingredients: [], steps: [], tags: [], imageUrl: "", prepTime: "", servings: "" };
 
 const RecetteForm: React.FC = () => {
 
@@ -49,8 +49,8 @@ const RecetteForm: React.FC = () => {
         if (!id) return;
         axios.get(`${apibaseurl}/recette/${id}`)
             .then(res => {
-                const { name, rate, ingredients, steps, tags, imageUrl, prepTime } = res.data;
-                setRecette({ name, rate, ingredients, steps, tags, imageUrl: imageUrl ?? "", prepTime: prepTime ?? "" });
+                const { name, rate, ingredients, steps, tags, imageUrl, prepTime, servings } = res.data;
+                setRecette({ name, rate, ingredients, steps, tags, imageUrl: imageUrl ?? "", prepTime: prepTime ?? "", servings: servings ?? "" });
             })
             .catch(() => showToast("Impossible de charger la recette.", "error"));
     }, [id]);
@@ -172,6 +172,15 @@ const RecetteForm: React.FC = () => {
                     value={recette.prepTime}
                     min={0}
                     onChange={(e) => setRecette({ ...recette, prepTime: e.target.value === "" ? "" : parseInt(e.target.value) })}
+                />
+
+                <Label htmlFor="servings">Nombre de portions</Label>
+                <Input
+                    type="number"
+                    id="servings"
+                    value={recette.servings}
+                    min={1}
+                    onChange={(e) => setRecette({ ...recette, servings: e.target.value === "" ? "" : parseInt(e.target.value) })}
                 />
 
                 <Label htmlFor="imageFile">Photo de la recette</Label>

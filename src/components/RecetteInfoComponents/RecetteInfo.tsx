@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import IngredientInfoList from "./ingredients/IngredientInfoList";
 import StepInfoList from "./steps/StepInfoList";
 import {
@@ -6,9 +6,15 @@ import {
     RecetteHeroImage,
     BackButton,
     RecetteTitle,
-    RecetteDetails,
+    MetaBar,
+    MetaChip,
     TagList,
     Tag,
+    TwoColumnLayout,
+    ServingsControl,
+    ServingsLabel,
+    ServingsButton,
+    ServingsCount,
     ActionButtons,
     EditButton,
     DeleteButton,
@@ -24,6 +30,7 @@ type Recette = {
     tags: string[];
     imageUrl?: string;
     prepTime?: number;
+    servings?: number;
 }
 
 type Ingredient = {
@@ -40,7 +47,44 @@ type RecetteProps = {
     onDelete: () => void;
 }
 
+const StarRating: React.FC<{ rate: number }> = ({ rate }) => (
+    <span style={{ display: 'inline-flex', gap: 2 }}>
+        {[1, 2, 3, 4, 5].map(star => {
+            const filled = rate >= star;
+            const half = !filled && rate >= star - 0.5;
+            return (
+                <span key={star} style={{ position: 'relative', display: 'inline-block', fontSize: '1rem', lineHeight: 1 }}>
+                    <span style={{ color: '#D1D5DB' }}>★</span>
+                    {(filled || half) && (
+                        <span style={{
+                            position: 'absolute', left: 0, top: 0,
+                            overflow: 'hidden',
+                            width: filled ? '100%' : '50%',
+                            color: '#F59E0B',
+                        }}>★</span>
+                    )}
+                </span>
+            );
+        })}
+    </span>
+);
+
+const formatQuantity = (q: number): string => {
+    const rounded = Math.round(q * 10) / 10;
+    return rounded % 1 === 0 ? String(Math.round(rounded)) : rounded.toFixed(1);
+};
+
 function RecetteInfo({ recette, onBack, onEdit, onDelete }: RecetteProps) {
+    const baseServings = recette.servings ?? null;
+    const [currentServings, setCurrentServings] = useState<number>(baseServings ?? 1);
+
+    const scaledIngredients = recette.ingredients.map(ing => ({
+        ...ing,
+        quantity: baseServings
+            ? parseFloat(formatQuantity((ing.quantity * currentServings) / baseServings))
+            : ing.quantity,
+    }));
+
     return (
         <RecetteDetailsWrapper>
             <BackButton onClick={onBack}>Retour</BackButton>
@@ -48,12 +92,28 @@ function RecetteInfo({ recette, onBack, onEdit, onDelete }: RecetteProps) {
                 <RecetteHeroImage src={recette.imageUrl} alt={recette.name} />
             )}
             <RecetteTitle>{recette.name}</RecetteTitle>
-            <RecetteDetails>⭐ {recette.rate}/5</RecetteDetails>
-            {recette.prepTime && <RecetteDetails>⏱ Préparation : {recette.prepTime} min</RecetteDetails>}
-            <RecetteDetails>Date : {new Date(recette.date).toLocaleDateString()}</RecetteDetails>
+            <MetaBar>
+                <MetaChip><StarRating rate={recette.rate} /></MetaChip>
+                {recette.prepTime && <MetaChip>⏱ {recette.prepTime} min</MetaChip>}
+                <MetaChip>📅 {new Date(recette.date).toLocaleDateString()}</MetaChip>
+            </MetaBar>
 
-            <IngredientInfoList ingredients={recette.ingredients} />
-            <StepInfoList steps={recette.steps} />
+            {baseServings && (
+                <ServingsControl>
+                    <ServingsLabel>Portions :</ServingsLabel>
+                    <ServingsButton
+                        onClick={() => setCurrentServings(s => Math.max(1, s - 1))}
+                        disabled={currentServings <= 1}
+                    >−</ServingsButton>
+                    <ServingsCount>{currentServings}</ServingsCount>
+                    <ServingsButton onClick={() => setCurrentServings(s => s + 1)}>+</ServingsButton>
+                </ServingsControl>
+            )}
+
+            <TwoColumnLayout>
+                <IngredientInfoList ingredients={scaledIngredients} />
+                <StepInfoList steps={recette.steps} />
+            </TwoColumnLayout>
 
             <TagList>
                 {recette.tags.map((tag: string, idx: number) => (
