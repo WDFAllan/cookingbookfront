@@ -7,6 +7,15 @@ const border = '#E2EBE4';
 const tagBg = '#D8F3DC';
 const tagText = '#1B4332';
 
+export const RecetteHeroImage = styled.img`
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    display: block;
+`;
+
 export const RecetteDetailsWrapper = styled.div`
     max-width: 780px;
     margin: 2rem auto;

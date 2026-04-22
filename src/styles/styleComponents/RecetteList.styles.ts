@@ -90,6 +90,14 @@ export const RecetteListWrapper = styled.div`
     }
 `;
 
+export const CardImage = styled.img`
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+`;
+
 export const RecetteCard = styled.div`
     display: flex;
     flex-direction: column;

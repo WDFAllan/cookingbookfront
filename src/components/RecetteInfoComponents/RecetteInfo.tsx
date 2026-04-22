@@ -3,6 +3,7 @@ import IngredientInfoList from "./ingredients/IngredientInfoList";
 import StepInfoList from "./steps/StepInfoList";
 import {
     RecetteDetailsWrapper,
+    RecetteHeroImage,
     BackButton,
     RecetteTitle,
     RecetteDetails,
@@ -21,6 +22,8 @@ type Recette = {
     ingredients: Ingredient[];
     steps: string[];
     tags: string[];
+    imageUrl?: string;
+    prepTime?: number;
 }
 
 type Ingredient = {
@@ -41,8 +44,12 @@ function RecetteInfo({ recette, onBack, onEdit, onDelete }: RecetteProps) {
     return (
         <RecetteDetailsWrapper>
             <BackButton onClick={onBack}>Retour</BackButton>
+            {recette.imageUrl && (
+                <RecetteHeroImage src={recette.imageUrl} alt={recette.name} />
+            )}
             <RecetteTitle>{recette.name}</RecetteTitle>
             <RecetteDetails>⭐ {recette.rate}/5</RecetteDetails>
+            {recette.prepTime && <RecetteDetails>⏱ Préparation : {recette.prepTime} min</RecetteDetails>}
             <RecetteDetails>Date : {new Date(recette.date).toLocaleDateString()}</RecetteDetails>
 
             <IngredientInfoList ingredients={recette.ingredients} />

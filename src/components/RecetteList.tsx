@@ -2,7 +2,6 @@ import axios from "axios";
 import qs from "qs";
 import {useEffect, useState} from "react";
 import SelectFilterTags from "./FilterByTagsComponents/SelectFilterTags"
-import "../styles/css/RecetteList.css";
 import {
     PageHeader,
     HeaderTitle,
@@ -10,6 +9,7 @@ import {
     SearchInput,
     RecetteListWrapper,
     RecetteCard,
+    CardImage,
     RecetteName,
     RecetteDetails,
     RecetteRate,
@@ -26,10 +26,11 @@ type Recette = {
     name: string;
     rate: number;
     date: Date;
-    ingredients:Ingredient[];
+    ingredients: Ingredient[];
     steps: string[];
     tags: string[];
-
+    imageUrl?: string;
+    prepTime?: number;
 }
 
 type Ingredient = {
@@ -162,10 +163,13 @@ function RecetteList(){
             <RecetteListWrapper>
                 {filteredList.map((recette) => (
                     <RecetteCard key={recette.id} onClick={() => navigate(`/recette/${recette.id}`)}>
+                        {recette.imageUrl && (
+                            <CardImage src={recette.imageUrl} alt={recette.name} />
+                        )}
                         <RecetteName>{recette.name}</RecetteName>
                         <RecetteDetails>
                             <RecetteRate>⭐ {recette.rate}/5</RecetteRate>
-                            <RecetteDate>{new Date(recette.date).toLocaleDateString()}</RecetteDate>
+                            {recette.prepTime && <RecetteDate>⏱ {recette.prepTime} min</RecetteDate>}
                         </RecetteDetails>
                         <TagList>
                             {recette.tags.map((tag, idx) => (
