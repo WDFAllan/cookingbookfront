@@ -8,6 +8,7 @@ import StepList from "./steps/StepList";
 import "../../styles/css/RecetteForm.css";
 
 import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import {
@@ -45,7 +46,7 @@ const RecetteForm: React.FC = () => {
 
     useEffect(() => {
         if (!id) return;
-        axios.get(`${apibaseurl}/recette/${id}`)
+        axiosInstance.get(`${apibaseurl}/recette/${id}`)
             .then(res => {
                 const { name, rate, ingredients, steps, tags, imageUrl, prepTime, servings } = res.data;
                 setRecette({ name, rate, ingredients, steps, tags, imageUrl: imageUrl ?? "", prepTime: prepTime ?? "", servings: servings ?? "" });
@@ -68,7 +69,7 @@ const RecetteForm: React.FC = () => {
         const formData = new FormData();
         formData.append("file", blob, "recette.jpg");
         try {
-            const res = await axios.post(`${apibaseurl}/upload`, formData, {
+            const res = await axiosInstance.post(`${apibaseurl}/upload`, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             const baseUrl = apibaseurl?.replace('/api/v1', '') ?? '';
@@ -112,10 +113,10 @@ const RecetteForm: React.FC = () => {
         }
         try {
             if (isEditMode) {
-                await axios.put(`${apibaseurl}/recette/${id}`, recette);
+                await axiosInstance.put(`${apibaseurl}/recette/${id}`, recette);
                 showToast("Recette modifiée avec succès !", "success");
             } else {
-                await axios.post(`${apibaseurl}/recette`, recette);
+                await axiosInstance.post(`${apibaseurl}/recette`, recette);
                 showToast("Recette créée avec succès !", "success");
                 setRecette(emptyRecette);
             }

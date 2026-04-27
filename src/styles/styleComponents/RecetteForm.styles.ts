@@ -1,91 +1,96 @@
 import styled from 'styled-components';
 
-const primary = '#2D6A4F';
-const primaryDark = '#1B4332';
-const primaryLight = '#40916C';
-const bgPage = '#F6FAF7';
-const border = '#E2EBE4';
+const deep    = '#0d2b18';
+const primary = '#166534';
+const mid     = '#16a34a';
+const surface = '#ffffff';
+const bg      = '#f5f7f5';
+const border  = '#e2ebe5';
+const text    = '#0d1f15';
+const muted   = '#52736a';
 
 export const FormWrapper = styled.form`
-    max-width: 640px;
+    max-width: 620px;
     margin: 2.5rem auto;
     padding: 2.5rem;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    background: ${surface};
+    border-radius: 20px;
+    border: 1px solid ${border};
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.03);
 
     @media (max-width: 700px) {
         margin: 1rem;
         padding: 1.5rem;
+        border-radius: 16px;
     }
 `;
 
 export const Title = styled.h2`
     text-align: center;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: ${primaryDark};
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: ${deep};
     margin: 0 0 2rem;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
 `;
 
 export const Label = styled.label`
     display: block;
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     font-weight: 700;
-    margin-bottom: 6px;
-    color: #374151;
+    margin-bottom: 5px;
+    color: ${muted};
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
 `;
 
 export const Input = styled.input`
     width: 100%;
     padding: 0.65rem 0.875rem;
-    font-size: 1rem;
+    font-size: 0.95rem;
     border: 1.5px solid ${border};
-    border-radius: 8px;
+    border-radius: 10px;
     margin-bottom: 1.25rem;
     box-sizing: border-box;
-    color: #111827;
-    background: ${bgPage};
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    color: ${text};
+    background: ${bg};
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 
     &:focus {
-        border-color: ${primaryLight};
+        border-color: ${mid};
         outline: none;
-        box-shadow: 0 0 0 3px rgba(64, 145, 108, 0.15);
-        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(22,163,74,0.12);
+        background: ${surface};
     }
 `;
 
 export const Button = styled.button`
     width: 100%;
-    padding: 0.8rem;
-    font-size: 1rem;
-    font-weight: 600;
-    background: linear-gradient(135deg, ${primary} 0%, ${primaryLight} 100%);
+    padding: 0.825rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    background: ${primary};
     color: #ffffff;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: opacity 0.2s ease, transform 0.1s ease;
+    letter-spacing: 0.01em;
+    transition: background 0.18s ease, transform 0.12s ease;
     margin-top: 0.5rem;
 
     &:hover {
-        opacity: 0.9;
+        background: ${mid};
+        transform: translateY(-1px);
     }
 
-    &:active {
-        transform: scale(0.99);
-    }
+    &:active { transform: translateY(0); }
 `;
 
 export const Section = styled.div`
     margin-bottom: 1.5rem;
     padding: 1.25rem;
-    background: ${bgPage};
-    border-radius: 10px;
+    background: ${bg};
+    border-radius: 12px;
     border: 1px solid ${border};
 `;
 
@@ -98,39 +103,36 @@ export const InputRow = styled.div`
 `;
 
 export const SmallInput = styled.input`
-    padding: 0.6rem 0.75rem;
-    font-size: 0.9rem;
+    padding: 0.575rem 0.75rem;
+    font-size: 0.875rem;
     border: 1.5px solid ${border};
-    border-radius: 8px;
-    color: #111827;
-    background: ${bgPage};
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 10px;
+    color: ${text};
+    background: ${surface};
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
     min-width: 0;
 
     &:focus {
-        border-color: ${primaryLight};
+        border-color: ${mid};
         outline: none;
-        box-shadow: 0 0 0 3px rgba(64, 145, 108, 0.15);
-        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(22,163,74,0.12);
     }
 `;
 
 export const AddButton = styled.button`
-    padding: 0.6rem 1rem;
+    padding: 0.575rem 1rem;
     background: ${primary};
     color: #ffffff;
     border: none;
-    border-radius: 8px;
-    font-size: 0.875rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
     white-space: nowrap;
     flex-shrink: 0;
-    transition: background 0.2s ease;
+    transition: background 0.18s ease;
 
-    &:hover {
-        background: ${primaryDark};
-    }
+    &:hover { background: ${mid}; }
 `;
 
 export const ItemsList = styled.ul`
@@ -139,29 +141,29 @@ export const ItemsList = styled.ul`
     margin: 0.5rem 0 0;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.35rem;
 `;
 
 export const ItemRow = styled.li`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.55rem 0.75rem;
-    background: #ffffff;
+    padding: 0.5rem 0.75rem;
+    background: ${surface};
     border: 1px solid ${border};
     border-radius: 8px;
     font-size: 0.875rem;
-    color: #374151;
+    color: ${text};
     list-style: none;
 `;
 
 export const StepNumber = styled.span`
-    min-width: 22px;
-    height: 22px;
+    min-width: 20px;
+    height: 20px;
     background: ${primary};
     color: #ffffff;
     border-radius: 50%;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 700;
     display: inline-flex;
     align-items: center;
@@ -172,11 +174,11 @@ export const StepNumber = styled.span`
 
 export const RemoveButton = styled.button`
     background: transparent;
-    color: #9CA3AF;
+    color: #9ca3af;
     border: none;
     padding: 0.2rem 0.35rem;
     cursor: pointer;
-    font-size: 0.875rem;
+    font-size: 0.85rem;
     border-radius: 4px;
     transition: color 0.15s ease, background 0.15s ease;
     flex-shrink: 0;
@@ -185,7 +187,7 @@ export const RemoveButton = styled.button`
 
     &:hover {
         color: #dc2626;
-        background: #fee2e2;
+        background: #fef2f2;
     }
 `;
 
@@ -203,10 +205,10 @@ export const TagPill = styled.li`
     align-items: center;
     gap: 0.35rem;
     padding: 0.25rem 0.65rem;
-    background: #d8f3dc;
-    color: #1b4332;
-    border-radius: 20px;
-    font-size: 0.8rem;
+    background: #dcfce7;
+    color: #14532d;
+    border-radius: 6px;
+    font-size: 0.78rem;
     font-weight: 600;
     list-style: none;
 `;
@@ -214,25 +216,23 @@ export const TagPill = styled.li`
 export const TagPillRemove = styled.button`
     background: transparent;
     border: none;
-    color: #2d6a4f;
+    color: #166634;
     cursor: pointer;
     padding: 0;
     font-size: 0.75rem;
     line-height: 1;
-    opacity: 0.6;
+    opacity: 0.55;
     transition: opacity 0.15s;
 
-    &:hover {
-        opacity: 1;
-    }
+    &:hover { opacity: 1; }
 `;
 
 export const TagGroupLabel = styled.span`
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    color: #6B7280;
+    color: ${muted};
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     margin-bottom: 0.4rem;
     display: block;
 `;
@@ -240,24 +240,25 @@ export const TagGroupLabel = styled.span`
 export const TagGroup = styled.div`
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
+    gap: 0.45rem;
+    margin-bottom: 0.875rem;
 `;
 
 export const TagToggleButton = styled.button<{ $selected: boolean }>`
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
+    padding: 0.375rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.15s ease;
-    border: 1.5px solid #2D6A4F;
-    background: ${({ $selected }) => $selected ? '#2D6A4F' : 'transparent'};
-    color: ${({ $selected }) => $selected ? '#ffffff' : '#2D6A4F'};
+    border: 1.5px solid ${({ $selected }) => $selected ? primary : border};
+    background: ${({ $selected }) => $selected ? primary : surface};
+    color: ${({ $selected }) => $selected ? '#ffffff' : muted};
 
     &:hover {
-        background: ${({ $selected }) => $selected ? '#1B4332' : '#d8f3dc'};
-        border-color: #1B4332;
+        border-color: ${primary};
+        color: ${({ $selected }) => $selected ? '#ffffff' : primary};
+        background: ${({ $selected }) => $selected ? mid : '#f0fdf4'};
     }
 `;
 
@@ -265,17 +266,17 @@ export const BackToListButton = styled.button`
     display: block;
     margin: 0 auto 2.5rem;
     background: transparent;
-    color: ${primary};
+    color: ${muted};
     padding: 0.5rem 1.25rem;
-    border: 1.5px solid ${primary};
+    border: 1.5px solid ${border};
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.18s ease;
 
     &:hover {
-        background: ${primary};
-        color: #ffffff;
+        border-color: ${primary};
+        color: ${primary};
     }
 `;

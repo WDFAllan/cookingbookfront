@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../api/axiosInstance';
 import RecetteInfo from './RecetteInfoComponents/RecetteInfo';
 
 type Ingredient = { id: number; name: string; quantity: number; unit: string; };
@@ -15,7 +15,7 @@ const RecettePage: React.FC = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get(`${apibaseurl}/recette/${id}`)
+        axiosInstance.get(`${apibaseurl}/recette/${id}`)
             .then(res => { setRecette(res.data); setLoading(false); })
             .catch(err => { console.error('Erreur chargement recette :', err); setLoading(false); });
     }, [id]);
@@ -24,15 +24,15 @@ const RecettePage: React.FC = () => {
         if (!recette) return;
         if (!window.confirm(`Supprimer « ${recette.name} » ?`)) return;
         try {
-            await axios.delete(`${apibaseurl}/recette/${id}`);
+            await axiosInstance.delete(`${apibaseurl}/recette/${id}`);
             navigate('/listeRecette');
         } catch (err) {
             console.error('Erreur lors de la suppression :', err);
         }
     };
 
-    if (loading) return <p style={{ padding: '2rem' }}>Chargement...</p>;
-    if (!recette) return <p style={{ padding: '2rem' }}>Recette introuvable.</p>;
+    if (loading) return <p style={{ padding: '2.5rem', color: '#52736a', fontSize: '0.95rem' }}>Chargement…</p>;
+    if (!recette) return <p style={{ padding: '2.5rem', color: '#52736a', fontSize: '0.95rem' }}>Recette introuvable.</p>;
 
     return (
         <RecetteInfo

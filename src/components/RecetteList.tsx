@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 import StarRating from "./StarRating";
 import qs from "qs";
 import {useEffect, useState} from "react";
@@ -9,6 +10,7 @@ import {
     RecetteListWrapper,
     RecetteCard,
     CardImage,
+    CardBody,
     RecetteName,
     RecetteDetails,
     RecetteRate,
@@ -59,7 +61,7 @@ function RecetteList(){
     useEffect(() => {
         const fetchRecetteList = async () => {
             try{
-                const response = await axios.get(`${apibaseurl}/recette`);
+                const response = await axiosInstance.get(`${apibaseurl}/recette`);
                 const RecetteListData = response.data;
                 if (Array.isArray(RecetteListData)) {
                     setRecetteList(RecetteListData);
@@ -79,7 +81,7 @@ function RecetteList(){
 
         const fetchTagsFilter = async () =>{
             try{
-                const response = await axios.get(`${apibaseurl}/recette/getAllTags`);
+                const response = await axiosInstance.get(`${apibaseurl}/recette/getAllTags`);
                 const filterTagslist = response?.data;
                 if(Array.isArray((filterTagslist))){
                     setFilterTags(filterTagslist);
@@ -104,13 +106,13 @@ function RecetteList(){
             try {
                 console.log(selectedTags);
                 if(selectedTags.length!=0){
-                    const response = await axios.get(`${apibaseurl}/recette/getByTags`, {
+                    const response = await axiosInstance.get(`${apibaseurl}/recette/getByTags`, {
                         params: {tags: selectedTags},
                         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: "comma" })
                     });
                     setRecetteList(response?.data);
                 }else{
-                    const response = await axios.get(`${apibaseurl}/recette`);
+                    const response = await axiosInstance.get(`${apibaseurl}/recette`);
                     const RecetteListData = response.data;
                     if (Array.isArray(RecetteListData)) {
                         setRecetteList(RecetteListData);
@@ -156,22 +158,22 @@ function RecetteList(){
                         {recette.imageUrl && (
                             <CardImage src={recette.imageUrl} alt={recette.name} />
                         )}
-                        <RecetteName>{recette.name}</RecetteName>
-                        <RecetteDetails>
-                            <RecetteRate><StarRating rate={recette.rate} size="0.95rem" /></RecetteRate>
-                            {recette.prepTime && <RecetteDate>⏱ {recette.prepTime} min</RecetteDate>}
-                        </RecetteDetails>
-                        <TagList>
-                            {recette.tags.map((tag, idx) => (
-                                <Tag key={idx}>{tag}</Tag>
-                            ))}
-                        </TagList>
+                        <CardBody>
+                            <RecetteName>{recette.name}</RecetteName>
+                            <RecetteDetails>
+                                <RecetteRate><StarRating rate={recette.rate} size="0.9rem" /></RecetteRate>
+                                {recette.prepTime && <RecetteDate>· ⏱ {recette.prepTime} min</RecetteDate>}
+                            </RecetteDetails>
+                            <TagList>
+                                {recette.tags.map((tag, idx) => (
+                                    <Tag key={idx}>{tag}</Tag>
+                                ))}
+                            </TagList>
+                        </CardBody>
                     </RecetteCard>
                 ))}
             </RecetteListWrapper>
         </div>
-
-
     );
 
 }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import StarRating from "../StarRating";
 import IngredientInfoList from "./ingredients/IngredientInfoList";
 import StepInfoList from "./steps/StepInfoList";
+import { useAuth } from "../../context/AuthContext";
 import {
     RecetteDetailsWrapper,
     RecetteHeroImage,
@@ -23,6 +24,8 @@ import {
 
 type Recette = {
     id: number;
+    userId?: number;
+    authorEmail?: string;
     name: string;
     rate: number;
     date: Date;
@@ -55,6 +58,9 @@ const formatQuantity = (q: number): string => {
 };
 
 function RecetteInfo({ recette, onBack, onEdit, onDelete }: RecetteProps) {
+    const { user } = useAuth();
+    const isOwner = user !== null && recette.userId !== undefined && user.id === recette.userId;
+
     const baseServings = recette.servings ?? null;
     const [currentServings, setCurrentServings] = useState<number>(baseServings ?? 1);
 
@@ -76,6 +82,7 @@ function RecetteInfo({ recette, onBack, onEdit, onDelete }: RecetteProps) {
                 <MetaChip><StarRating rate={recette.rate} /></MetaChip>
                 {recette.prepTime && <MetaChip>⏱ {recette.prepTime} min</MetaChip>}
                 <MetaChip>📅 {new Date(recette.date).toLocaleDateString()}</MetaChip>
+                {recette.authorEmail && <MetaChip>👤 {recette.authorEmail}</MetaChip>}
             </MetaBar>
 
             {baseServings && (
@@ -101,10 +108,12 @@ function RecetteInfo({ recette, onBack, onEdit, onDelete }: RecetteProps) {
                 ))}
             </TagList>
 
-            <ActionButtons>
-                <EditButton onClick={onEdit}>Modifier</EditButton>
-                <DeleteButton onClick={onDelete}>Supprimer</DeleteButton>
-            </ActionButtons>
+            {isOwner && (
+                <ActionButtons>
+                    <EditButton onClick={onEdit}>Modifier</EditButton>
+                    <DeleteButton onClick={onDelete}>Supprimer</DeleteButton>
+                </ActionButtons>
+            )}
         </RecetteDetailsWrapper>
     );
 }
