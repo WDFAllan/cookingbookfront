@@ -262,6 +262,40 @@ export const TagToggleButton = styled.button<{ $selected: boolean }>`
     }
 `;
 
+export const FieldError = styled.p`
+    color: #dc2626;
+    font-size: 0.78rem;
+    font-weight: 500;
+    margin: -0.75rem 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+
+    &::before { content: '⚠'; font-size: 0.7rem; }
+`;
+
+export const SectionError = styled.p`
+    color: #dc2626;
+    font-size: 0.78rem;
+    font-weight: 500;
+    margin: 0.4rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+
+    &::before { content: '⚠'; font-size: 0.7rem; }
+`;
+
+export const InputError = styled(Input)`
+    border-color: #fca5a5;
+    background: #fff5f5;
+
+    &:focus {
+        border-color: #dc2626;
+        box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
+    }
+`;
+
 export const BackToListButton = styled.button`
     display: block;
     margin: 0 auto 2.5rem;

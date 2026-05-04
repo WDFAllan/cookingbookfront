@@ -178,6 +178,78 @@ export const Tag = styled.span`
     letter-spacing: 0.01em;
 `;
 
+export const SortSelect = styled.select`
+    padding: 0.5rem 2rem 0.5rem 0.75rem;
+    border: 1.5px solid #e2ebe5;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #0d1f15;
+    background-color: #f5f7f5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%2352736a' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    appearance: none;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    flex-shrink: 0;
+
+    &:focus {
+        border-color: #16a34a;
+        box-shadow: 0 0 0 3px rgba(22,163,74,0.12);
+    }
+`;
+
+export const PaginationBar = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem 2rem 2rem;
+    flex-wrap: wrap;
+`;
+
+export const PageButton = styled.button<{ $active?: boolean }>`
+    min-width: 36px;
+    height: 36px;
+    padding: 0 0.6rem;
+    border-radius: 8px;
+    border: 1.5px solid ${({ $active }) => $active ? '#166534' : '#e2ebe5'};
+    background: ${({ $active }) => $active ? '#166534' : '#ffffff'};
+    color: ${({ $active }) => $active ? '#ffffff' : '#0d2b18'};
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover:not(:disabled) {
+        border-color: #166534;
+        background: ${({ $active }) => $active ? '#166534' : '#f0fdf4'};
+        color: ${({ $active }) => $active ? '#ffffff' : '#166534'};
+    }
+
+    &:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+    }
+`;
+
+export const PageInfo = styled.span`
+    font-size: 0.82rem;
+    color: #52736a;
+    font-weight: 500;
+    padding: 0 0.25rem;
+`;
+
+export const EmptyState = styled.div`
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #52736a;
+    font-size: 0.95rem;
+`;
+
 export const AddRecetteButton = styled.button`
     background: rgba(255,255,255,0.1);
     color: #ffffff;

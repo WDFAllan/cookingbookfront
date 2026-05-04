@@ -1,16 +1,11 @@
-// @ts-ignore
-import RecetteList from "./RecetteList.tsx";
-
+import RecetteList from "./RecetteList";
 
 function MainPage() {
     return (
-        <div className="MainPage">
-            <div className="recettes-list">
-                <RecetteList/>
-            </div>
-
+        <div>
+            <RecetteList />
         </div>
-    )
+    );
 }
 
 export default MainPage;

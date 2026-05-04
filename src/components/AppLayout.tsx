@@ -116,7 +116,8 @@ function AppLayout({ children }: AppLayoutProps) {
     const navigate = useNavigate();
     const location = useLocation();
     const { user, isAuthenticated, logout } = useAuth();
-    const isListPage = location.pathname === '/' || location.pathname === '/listeRecette';
+    const isLanding = location.pathname === '/';
+    const isListPage = location.pathname === '/listeRecette';
 
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -146,7 +147,14 @@ function AppLayout({ children }: AppLayoutProps) {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
-            <PageHeader>
+            <PageHeader style={isLanding ? {
+                background: 'transparent',
+                boxShadow: 'none',
+                position: 'absolute',
+                width: '100%',
+                top: 0,
+                zIndex: 200,
+            } : undefined}>
                 <HeaderTitle onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
                     Mon Livre de Recettes
                 </HeaderTitle>

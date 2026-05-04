@@ -261,6 +261,44 @@ export const StepText = styled.p`
     line-height: 1.55;
 `;
 
+export const RatingSection = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: ${surface};
+    border: 1px solid ${border};
+    border-radius: 12px;
+    padding: 0.75rem 1.1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+`;
+
+export const RatingLabel = styled.span`
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: ${muted};
+`;
+
+export const StarButton = styled.button<{ $active: boolean; $hover: boolean }>`
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: ${({ $active, $hover }) => ($active || $hover ? '#F59E0B' : '#D1D5DB')};
+    transition: color 0.12s ease, transform 0.1s ease;
+
+    &:hover { transform: scale(1.2); }
+`;
+
+export const RatingFeedback = styled.span`
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: ${muted};
+    margin-left: 0.25rem;
+`;
+
 export const ActionButtons = styled.div`
     display: flex;
     gap: 0.75rem;

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import MainPage from '../components/MainPage.tsx';
+import LandingPage from '../components/LandingPage';
 import RecetteForm from "../components/RecetteFormComponents/RecetteForm";
 import RecettePage from "../components/RecettePage";
 import AppLayout from "../components/AppLayout";
@@ -21,7 +22,7 @@ export default function DefineRoutes() {
         <Router>
             <AppLayout>
                 <Routes>
-                    <Route path="/" element={<MainPage />} />
+                    <Route path="/" element={<LandingPage />} />
                     <Route path="/listeRecette" element={<MainPage />} />
                     <Route path="/recette/:id" element={<RecettePage />} />
                     <Route path="/recetteForm" element={

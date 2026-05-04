@@ -5,7 +5,6 @@ import IngredientList from "./ingredients/IngredientList";
 import TagSelector from "./tags/TagSelector";
 import StepInput from "./steps/StepInput";
 import StepList from "./steps/StepList";
-import "../../styles/css/RecetteForm.css";
 
 import axios from "axios";
 import axiosInstance from "../../api/axiosInstance";
@@ -16,6 +15,9 @@ import {
     Title,
     Label,
     Input,
+    InputError,
+    FieldError,
+    SectionError,
     Button,
     Section,
     BackToListButton,
@@ -23,10 +25,11 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 
 type Ingredient = { name: string; quantity: number; unit: string; };
-type Recette = { name: string; rate: number; ingredients: Ingredient[]; steps: string[]; tags: string[]; imageUrl: string; prepTime: number | ""; servings: number | ""; };
+type Recette = { name: string; ingredients: Ingredient[]; steps: string[]; tags: string[]; imageUrl: string; prepTime: number | ""; servings: number | ""; };
 type Toast = { open: boolean; message: string; severity: 'success' | 'error' | 'warning' };
+type Errors = { name?: string; ingredients?: string; steps?: string; };
 
-const emptyRecette: Recette = { name: "", rate: 0, ingredients: [], steps: [], tags: [], imageUrl: "", prepTime: "", servings: "" };
+const emptyRecette: Recette = { name: "", ingredients: [], steps: [], tags: [], imageUrl: "", prepTime: "", servings: "" };
 
 const RecetteForm: React.FC = () => {
 
@@ -40,6 +43,7 @@ const RecetteForm: React.FC = () => {
     const [stepInput, setStepInput] = useState<string>("");
     const [toast, setToast] = useState<Toast>({ open: false, message: "", severity: "success" });
     const [cropSrc, setCropSrc] = useState<string | null>(null);
+    const [errors, setErrors] = useState<Errors>({});
 
     const showToast = (message: string, severity: Toast['severity']) =>
         setToast({ open: true, message, severity });
@@ -48,8 +52,8 @@ const RecetteForm: React.FC = () => {
         if (!id) return;
         axiosInstance.get(`${apibaseurl}/recette/${id}`)
             .then(res => {
-                const { name, rate, ingredients, steps, tags, imageUrl, prepTime, servings } = res.data;
-                setRecette({ name, rate, ingredients, steps, tags, imageUrl: imageUrl ?? "", prepTime: prepTime ?? "", servings: servings ?? "" });
+                const { name, ingredients, steps, tags, imageUrl, prepTime, servings } = res.data;
+                setRecette({ name, ingredients, steps, tags, imageUrl: imageUrl ?? "", prepTime: prepTime ?? "", servings: servings ?? "" });
             })
             .catch(() => showToast("Impossible de charger la recette.", "error"));
     }, [id]);
@@ -85,30 +89,41 @@ const RecetteForm: React.FC = () => {
 
     const handleIngredientAdd = () => {
         if (ingredientInput.name && ingredientInput.quantity > 0 && ingredientInput.unit) {
-            setRecette({ ...recette, ingredients: [...recette.ingredients, ingredientInput] });
+            setRecette(r => ({ ...r, ingredients: [...r.ingredients, ingredientInput] }));
             setIngredientInput({ name: '', quantity: 0, unit: '' });
+            setErrors(e => ({ ...e, ingredients: undefined }));
         }
     };
 
     const handleIngredientRemove = (index: number) => {
-        setRecette({ ...recette, ingredients: recette.ingredients.filter((_, i) => i !== index) });
+        setRecette(r => ({ ...r, ingredients: r.ingredients.filter((_, i) => i !== index) }));
     };
 
     const handleStepAdd = () => {
         if (stepInput.trim()) {
-            setRecette({ ...recette, steps: [...recette.steps, stepInput.trim()] });
+            setRecette(r => ({ ...r, steps: [...r.steps, stepInput.trim()] }));
             setStepInput('');
+            setErrors(e => ({ ...e, steps: undefined }));
         }
     };
 
     const handleStepRemove = (index: number) => {
-        setRecette({ ...recette, steps: recette.steps.filter((_, i) => i !== index) });
+        setRecette(r => ({ ...r, steps: r.steps.filter((_, i) => i !== index) }));
+    };
+
+    const validate = (): Errors => {
+        const e: Errors = {};
+        if (!recette.name.trim()) e.name = "Le nom de la recette est obligatoire.";
+        if (recette.ingredients.length === 0) e.ingredients = "Ajoutez au moins un ingrédient.";
+        if (recette.steps.length === 0) e.steps = "Ajoutez au moins une étape.";
+        return e;
     };
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        if (!recette.name.trim()) {
-            showToast("Le nom de la recette est obligatoire.", "warning");
+        const e = validate();
+        if (Object.keys(e).length > 0) {
+            setErrors(e);
             return;
         }
         try {
@@ -130,28 +145,26 @@ const RecetteForm: React.FC = () => {
     };
 
     return (
-        <div className="forms">
+        <div style={{ minHeight: '100%' }}>
             <FormWrapper onSubmit={handleSubmit}>
                 <Title>{isEditMode ? "Modifier la recette" : "Nouvelle recette"}</Title>
 
                 <Label htmlFor="name">Nom de la recette</Label>
-                <Input
-                    type="text"
-                    id="name"
-                    value={recette.name}
-                    onChange={(e) => setRecette({ ...recette, name: e.target.value })}
-                />
-
-                <Label htmlFor="rate">Note (0 – 5)</Label>
-                <Input
-                    type="number"
-                    id="rate"
-                    value={recette.rate}
-                    min={0}
-                    max={5}
-                    step={0.5}
-                    onChange={(e) => setRecette({ ...recette, rate: parseFloat(e.target.value) })}
-                />
+                {errors.name
+                    ? <InputError
+                        type="text"
+                        id="name"
+                        value={recette.name}
+                        onChange={(e) => { setRecette(r => ({ ...r, name: e.target.value })); setErrors(err => ({ ...err, name: undefined })); }}
+                    />
+                    : <Input
+                        type="text"
+                        id="name"
+                        value={recette.name}
+                        onChange={(e) => setRecette(r => ({ ...r, name: e.target.value }))}
+                    />
+                }
+                {errors.name && <FieldError>{errors.name}</FieldError>}
 
                 <Label htmlFor="prepTime">Temps de préparation (minutes)</Label>
                 <Input
@@ -159,7 +172,7 @@ const RecetteForm: React.FC = () => {
                     id="prepTime"
                     value={recette.prepTime}
                     min={0}
-                    onChange={(e) => setRecette({ ...recette, prepTime: e.target.value === "" ? "" : parseInt(e.target.value) })}
+                    onChange={(e) => setRecette(r => ({ ...r, prepTime: e.target.value === "" ? "" : parseInt(e.target.value) }))}
                 />
 
                 <Label htmlFor="servings">Nombre de portions</Label>
@@ -168,7 +181,7 @@ const RecetteForm: React.FC = () => {
                     id="servings"
                     value={recette.servings}
                     min={1}
-                    onChange={(e) => setRecette({ ...recette, servings: e.target.value === "" ? "" : parseInt(e.target.value) })}
+                    onChange={(e) => setRecette(r => ({ ...r, servings: e.target.value === "" ? "" : parseInt(e.target.value) }))}
                 />
 
                 <Label htmlFor="imageFile">Photo de la recette</Label>
@@ -198,19 +211,21 @@ const RecetteForm: React.FC = () => {
                         ingredients={recette.ingredients}
                         onRemoveIngredient={handleIngredientRemove}
                     />
+                    {errors.ingredients && <SectionError>{errors.ingredients}</SectionError>}
                 </Section>
 
                 <Section>
                     <Label>Étapes</Label>
                     <StepInput stepInput={stepInput} onStepChange={setStepInput} onAddStep={handleStepAdd} />
                     <StepList steps={recette.steps} onRemoveStep={handleStepRemove} />
+                    {errors.steps && <SectionError>{errors.steps}</SectionError>}
                 </Section>
 
                 <Section>
                     <Label>Tags</Label>
                     <TagSelector
                         tags={recette.tags}
-                        onChange={(tags) => setRecette({ ...recette, tags })}
+                        onChange={(tags) => setRecette(r => ({ ...r, tags }))}
                     />
                 </Section>
 
