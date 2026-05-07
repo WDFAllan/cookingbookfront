@@ -12,9 +12,9 @@ const StarRating: React.FC<StarRatingProps> = ({ rate, size = '1rem' }) => (
             const half = !filled && rate >= star - 0.5;
             return (
                 <span key={star} style={{ position: 'relative', display: 'inline-block', fontSize: size, lineHeight: 1 }}>
-                    <span style={{ color: '#D1D5DB' }}>★</span>
+                    <span data-testid="star-base" style={{ color: '#D1D5DB' }}>★</span>
                     {(filled || half) && (
-                        <span style={{
+                        <span data-testid="star-colored" style={{
                             position: 'absolute', left: 0, top: 0,
                             overflow: 'hidden',
                             width: filled ? '100%' : '50%',
