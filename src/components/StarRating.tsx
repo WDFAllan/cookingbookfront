@@ -18,7 +18,7 @@ const StarRating: React.FC<StarRatingProps> = ({ rate, size = '1rem' }) => (
                             position: 'absolute', left: 0, top: 0,
                             overflow: 'hidden',
                             width: filled ? '100%' : '50%',
-                            color: '#F59E0B',
+                            color: '#ee9a0a',
                         }}>★</span>
                     )}
                 </span>
